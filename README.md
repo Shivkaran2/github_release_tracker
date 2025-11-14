@@ -7,15 +7,15 @@ A web app to track GitHub repositories and stay updated with their latest releas
 
 ```env for backend
 # Server
-<!-- PORT=4000
-DATABASE_URL=postgresql://postgres:Gur@RZ2K25!@db.flfcgcntawznusxtxylx.supabase.co:5432/postgres
-GITHUB_TOKEN=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
-GITHUB_CLIENT_ID=Ov23liVwcWhnmY3RkXaN
-GITHUB_CLIENT_SECRET=444fc7f4d9b71427ea887b0fd080431e6800f44b
-JWT_SECRET=JShivkaran_Gur@2k25!
+PORT=4000
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@db.YOUR_PROJECT.supabase.co:5432/postgres
+GITHUB_TOKEN=your_github_personal_access_token_here
+GITHUB_CLIENT_ID=your_github_oauth_client_id
+GITHUB_CLIENT_SECRET=your_github_oauth_client_secret
+JWT_SECRET=your_jwt_secret_min_32_chars
 SYNC_INTERVAL_MS=600000
 USE_MOCK_SERVER=false
-WEBHOOK_SECRET=Shiv@RZ2K25!Gur -->
+WEBHOOK_SECRET=your_webhook_secret
 ```
 
 ```env for frontend
@@ -86,8 +86,9 @@ You'll need:
    ```
 
 2. **Set up environment variables:**
-   - Copy `backend/env.example` to `backend/.env`
-   - Fill in your credentials (see below)
+   - Create `backend/.env` file (see example format in section "3. Environment Variables" below)
+   - **📖 For detailed step-by-step instructions on generating all secrets and tokens, see [GENERATE_TOKENS.md](./GENERATE_TOKENS.md)**
+   - Fill in your credentials following the guide
 
 3. **Set up the database:**
    ```bash
@@ -118,55 +119,36 @@ You'll need:
 
 ## Setup Instructions
 
-### 1. GitHub OAuth Setup
+### Quick Overview
 
-You need to create a GitHub OAuth app so users can log in:
+To set up the application, you'll need to generate several secrets and tokens. **For complete step-by-step instructions, see [GENERATE_TOKENS.md](./GENERATE_TOKENS.md)**.
 
-1. Go to https://github.com/settings/developers
-2. Click "New OAuth App"
-3. Fill in:
-   - **Application name:** Whatever you want (e.g., "GitHub Release Tracker")
-   - **Homepage URL:** `http://localhost:5173`
-   - **Authorization callback URL:** `http://localhost:4000/auth/github/callback`
-4. Click "Register application"
-5. Copy the **Client ID** and click "Generate a new client secret" - save that secret, you won't see it again!
+### Required Environment Variables
 
-### 2. Database Setup
+You need to create a `backend/.env` file with the following variables:
 
-**Option A: Supabase (Easiest)**
-
-1. Sign up at https://supabase.com (free tier is fine)
-2. Create a new project
-3. Go to Project Settings → Database
-4. Copy the connection string - it'll look like:
-   ```
-   postgresql://postgres:[YOUR-PASSWORD]@db.[PROJECT-REF].supabase.co:5432/postgres
-   ```
-   Replace `[YOUR-PASSWORD]` with your actual database password.
-
-**Option B: Local PostgreSQL**
-
-1. Install PostgreSQL if you don't have it
-2. Create a database:
-   ```sql
-   CREATE DATABASE github_tracker;
-   ```
-3. Your connection string will be:
-   ```
-   postgresql://postgres:yourpassword@localhost:5432/github_tracker
-   ```
-
-
-**Required variables:**
-- `DATABASE_URL` - Your PostgreSQL connection string
-- `GITHUB_CLIENT_ID` - From your OAuth app
-- `GITHUB_CLIENT_SECRET` - From your OAuth app
-- `JWT_SECRET` - Any random string (at least 32 characters)
+**Required:**
+- `DATABASE_URL` - PostgreSQL connection string (Supabase or local)
+- `GITHUB_CLIENT_ID` - From GitHub OAuth app
+- `GITHUB_CLIENT_SECRET` - From GitHub OAuth app  
+- `JWT_SECRET` - Random string (minimum 32 characters)
 
 **Optional:**
-- `GITHUB_TOKEN` - Only needed if you want to fetch public repos without user login
-- `WEBHOOK_SECRET` - Only if you're setting up GitHub webhooks
-- Everything else has sensible defaults
+- `GITHUB_TOKEN` - Personal Access Token (for private repos or rate limits)
+- `WEBHOOK_SECRET` - For GitHub webhooks (optional)
+- `PORT` - Server port (default: 4000)
+- `SYNC_INTERVAL_MS` - Sync frequency in milliseconds (default: 600000)
+- `USE_MOCK_SERVER` - Use mock data (default: false)
+
+### Where to Get Each Secret
+
+1. **GitHub Personal Access Token** → https://github.com/settings/tokens
+2. **GitHub OAuth App** → https://github.com/settings/developers
+3. **Database URL** → Supabase (https://supabase.com) or Local PostgreSQL
+4. **JWT Secret** → Generate using Node.js, OpenSSL, or online generator
+5. **Webhook Secret** → Generate random string (optional)
+
+**📖 Full instructions with screenshots and troubleshooting: [GENERATE_TOKENS.md](./GENERATE_TOKENS.md)**
 
 ### 4. Database Migration
 
