@@ -1,0 +1,4 @@
+export const REPOSITORY_SYNC_BATCH_SIZE = 10;
+
+export const REPOSITORY_SYNC_DELAY_MS = 50;
+

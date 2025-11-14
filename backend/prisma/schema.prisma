@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Repository {
+  id           String           @id @default(cuid())
+  owner        String
+  name         String
+  description  String?
+  url          String           @unique
+  lastSyncedAt DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  releases     Release[]
+  users        UserRepository[]
+
+  @@unique([owner, name])
+}
+
+model Release {
+  id             String        @id @default(cuid())
+  repositoryId   String
+  tagName        String
+  title          String?
+  notes          String?
+  publishedAt    DateTime?
+  isDraft        Boolean       @default(false)
+  isPrerelease   Boolean       @default(false)
+  htmlUrl        String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  repository     Repository    @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+  seenStatuses   ReleaseSeen[]
+
+  @@unique([repositoryId, tagName])
+}
+
+model User {
+  id            String        @id @default(cuid())
+  githubId      String        @unique
+  username      String
+  email         String?
+  avatarUrl     String?
+  accessToken   String?       @db.Text
+  refreshToken  String?       @db.Text
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  repositories  UserRepository[]
+  releaseSeens  ReleaseSeen[]
+
+  @@index([githubId])
+}
+
+model UserRepository {
+  id           String     @id @default(cuid())
+  userId       String
+  repositoryId String
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  repository   Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, repositoryId])
+  @@index([userId])
+  @@index([repositoryId])
+}
+
+model ReleaseSeen {
+  id        String   @id @default(cuid())
+  releaseId String
+  userId    String
+  seenAt    DateTime @default(now())
+  release   Release  @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([releaseId, userId])
+}

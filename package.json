@@ -1,0 +1,27 @@
+{
+  "name": "trackgithubrepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Workspace for GitHub release tracker demo",
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "npm --workspace backend run dev",
+    "backend:build": "npm --workspace backend run build",
+    "backend:start": "npm --workspace backend run start",
+    "frontend:dev": "npm --workspace frontend run dev",
+    "frontend:build": "npm --workspace frontend run build",
+    "frontend:preview": "npm --workspace frontend run preview",
+    "build": "npm run backend:build && npm run frontend:build",
+    "start": "concurrently \"npm run backend:start\" \"npm run frontend:preview\"",
+    "lint": "biome lint .",
+    "format": "biome format ."
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.5",
+    "concurrently": "^9.2.1"
+  }
+}
