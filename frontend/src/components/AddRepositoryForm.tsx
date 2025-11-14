@@ -33,19 +33,27 @@ export function AddRepositoryForm({ onAdded }: AddRepositoryFormProps) {
   };
 
   return (
-    <form className="add-repo-form" onSubmit={handleSubmit}>
-      <input
-        type="url"
-        placeholder="https://github.com/owner/repo"
-        value={input}
-        onChange={(event) => setInput(event.target.value)}
-        disabled={loading}
-        required
-      />
-      <button type="submit" disabled={loading}>
-        {loading ? 'Adding…' : 'Add'}
-      </button>
-      {error ? <p className="form-error">{error.message}</p> : null}
-    </form>
+    <>
+      <form className="add-repo-form" onSubmit={handleSubmit}>
+        <input
+          type="url"
+          placeholder="https://github.com/owner/repo"
+          value={input}
+          onChange={(event) => setInput(event.target.value)}
+          disabled={loading}
+          required
+        />
+        <button type="submit" disabled={loading}>
+          {loading ? 'Adding…' : 'Add'}
+        </button>
+      </form>
+      {error ? (
+        <div className="form-error-container">
+          <p className="form-error">
+            <strong>⚠️ Error:</strong> {error.message}
+          </p>
+        </div>
+      ) : null}
+    </>
   );
 }

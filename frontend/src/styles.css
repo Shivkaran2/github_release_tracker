@@ -99,9 +99,37 @@ html {
   cursor: wait;
 }
 
+.form-error-container {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.75rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .form-error {
   margin: 0;
   color: #f87171;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.form-error strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
 }
 
 .app-layout {
