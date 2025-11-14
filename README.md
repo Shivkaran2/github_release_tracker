@@ -9,7 +9,7 @@ A web app to track GitHub repositories and stay updated with their latest releas
 # Server
 <!-- PORT=4000
 DATABASE_URL=postgresql://postgres:Gur@RZ2K25!@db.flfcgcntawznusxtxylx.supabase.co:5432/postgres
-GITHUB_TOKEN=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
+GITHUB_TOKEN=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
 GITHUB_CLIENT_ID=Ov23liVwcWhnmY3RkXaN
 GITHUB_CLIENT_SECRET=444fc7f4d9b71427ea887b0fd080431e6800f44b
 JWT_SECRET=JShivkaran_Gur@2k25!
